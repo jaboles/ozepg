@@ -48,6 +48,6 @@ public class ozEPG {
 	}
 	
 	public static String getVersion() {
-		return REVISION_STRING;
+		return Utils.findMatch(java.util.regex.Pattern.compile("\\$Rev: (\\d+) \\$"), REVISION_STRING);
 	}
 }
