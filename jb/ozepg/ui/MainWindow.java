@@ -45,7 +45,7 @@ public class MainWindow {
 				grabber.grab(selectedLocation.getId(), (Date)dateSpinner.getValue());
 			} catch (IOException ex) {
 				ex.printStackTrace(System.err);
-				JOptionPane.showMessageDialog(window, ex.toString());
+				JOptionPane.showMessageDialog(window, "Couldn't download EPG source data.\n\nPlease check that your computer is connected to the Internet.");
 			}
 		}
 	};
