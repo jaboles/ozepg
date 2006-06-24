@@ -14,6 +14,7 @@ public class ozEPG {
 	private LocationList locationList;
 	private jb.ozepg.ui.MainWindow mainWindow;
 	public static final String REVISION_STRING = "$Rev$";
+	public static final String DATE_STRING = "$Date$";
 	
 	public void executeUi() {
 		fetchLocationList();
@@ -48,6 +49,8 @@ public class ozEPG {
 	}
 	
 	public static String getVersion() {
-		return Utils.findMatch(java.util.regex.Pattern.compile("\\$Rev: (\\d+) \\$"), REVISION_STRING);
+		String rev = Utils.findMatch(java.util.regex.Pattern.compile("\\$Rev: (\\d+) \\$"), REVISION_STRING);
+		String date = Utils.findMatch(java.util.regex.Pattern.compile("\\$Date: (.*?) \\$"), DATE_STRING);
+		return rev + " (" + date + ")";
 	}
 }
