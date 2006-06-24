@@ -45,6 +45,7 @@ public class MainWindow {
 				grabber.grab(selectedLocation.getId(), (Date)dateSpinner.getValue());
 			} catch (IOException ex) {
 				ex.printStackTrace(System.err);
+				JOptionPane.showMessageDialog(window, ex.toString());
 			}
 		}
 	};

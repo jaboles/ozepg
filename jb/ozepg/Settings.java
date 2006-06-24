@@ -44,6 +44,14 @@ public class Settings {
 	public String getProgrammeDataDateFormat() {return "dd/MM/yyyy hh:mm aa";}
 	public String getProgrammeBaseUrl() {return "http://tvguide.ninemsn.com.au/cu/default.asp?pid=$ID$";}
 	
+	public Channel[] getChannels() {
+		return new Channel[] {
+			new Channel(new String[] {"ABC2"}, new int[] {2}),
+			new Channel(new String[] {"SBS News"}, new int[] {2}),
+			new Channel(new String[] {"Channel Seven Melbourne"}, new int[] {2})
+		};
+	}
+	
 	
 	public static Settings getInstance() {
 		if (singleton == null) singleton = new Settings();

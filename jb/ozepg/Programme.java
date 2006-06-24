@@ -13,7 +13,7 @@ import org.jdom.*;
 public class Programme {
 	private String id;
 	private String title;
-	private String channel;
+	private Channel channel;
 	private Date startTime;
 	private String description;
 	private int duration;
@@ -28,7 +28,7 @@ public class Programme {
 		title = s;
 	}
 	
-	public void setChannel(String s) {
+	public void setChannel(Channel s) {
 		channel = s;
 	}
 	
@@ -61,7 +61,7 @@ public class Programme {
 		return title;
 	}
 	
-	public String getChannel() {
+	public Channel getChannel() {
 		return channel;
 	}
 	
@@ -87,7 +87,7 @@ public class Programme {
 	
 	public Element toXMLElement() {
 		Element e = new Element("programme");
-		e.setAttribute("channel", channel);
+		e.setAttribute("channel", channel.getPrimaryName());
 		//e.setAttribute("start", null);
 		//e.setAttribute("stop", null);
 		e.addContent((Element)new Element("title").addContent(title));

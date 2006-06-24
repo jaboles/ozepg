@@ -15,7 +15,7 @@ public class ozEPG {
 	private jb.ozepg.ui.MainWindow mainWindow;
 	public static final String REVISION_STRING = "$Rev$";
 	public static final String DATE_STRING = "$Date$";
-	
+	private Map channelMap;
 	
 	public void executeUi() {
 		fetchLocationList();
@@ -31,6 +31,21 @@ public class ozEPG {
 				locationList = new LocationList();
 			} catch (IOException e2) {
 				ozEPG.getInstance().crashed("Couldn't access online TV guide.");
+			}
+		}
+	}
+	
+	public Channel getChannel(String name) {
+		return (Channel)channelMap.get(name);
+	}
+	
+	private ozEPG() {
+		Channel[] channels = Settings.getInstance().getChannels();
+		channelMap = new HashMap();
+		
+		for (int i = 0; i < channels.length; i++) {
+			for (int j = 0; j < channels[i].getAllNames().length; j++) {
+				channelMap.put(channels[i].getAllNames()[j], channels[i]);
 			}
 		}
 	}

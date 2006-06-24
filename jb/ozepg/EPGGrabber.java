@@ -69,7 +69,10 @@ public class EPGGrabber {
 					}
 					p.setStartTime(d);
 				} else if (orderKey.charAt(j) == 'C') {
-					p.setChannel(pd[i][j]);
+					Channel c = ozEPG.getInstance().getChannel(pd[i][j]);
+					if (c == null)
+						throw new IllegalArgumentException("Unknown channel '"+pd[i][j]+"'. Please check for an updated version of ozEPG!");
+					p.setChannel(c);
 				} else if (orderKey.charAt(j) == 'I') {
 					p.setId(pd[i][j]);
 				} else if (orderKey.charAt(j) == 'N') {
