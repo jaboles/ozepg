@@ -42,6 +42,7 @@ public class Settings {
 	public Pattern getProgrammeDataPattern() {return Pattern.compile("(?s)<b>(\\d{1,2}:\\d{2} [apm]{2})</b><BR><b>(.*?)(?:<[^>]*?>){3}<a(?:.*?)pid=(\\d*?)\"><b>(.*?)(?:<[^>]*?>){3} \\((\\d*?) mins, Rated:(.*?)\\) </font><br>([^<]*)");}
 	public String getProgrammeDataPatternKey() {return "TCINLRD";}
 	public String getProgrammeDataDateFormat() {return "dd/MM/yyyy hh:mm aa";}
+	public String getProgrammeBaseUrl() {return "http://tvguide.ninemsn.com.au/cu/default.asp?pid=$ID$";}
 	
 	
 	public static Settings getInstance() {

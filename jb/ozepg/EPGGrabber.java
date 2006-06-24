@@ -22,20 +22,24 @@ public class EPGGrabber {
 		programmeDataDateParser = new SimpleDateFormat(Settings.getInstance().getProgrammeDataDateFormat());
 	}
 	
-	public ArrayList grab(int location, Date date) throws IOException, IllegalArgumentException {
-		ArrayList programmeAL = new ArrayList();
+	public XMLTVDocument grab(int location, Date date) throws IOException, IllegalArgumentException {
+		XMLTVDocument tvDoc = new XMLTVDocument();
+		ArrayList programmes = new ArrayList();
+		
 		
 		for (int i = 0; i < Settings.getInstance().getProgramListUrlCount(); i++) {
-			grabAndAdd(location, date, programmeAL, Settings.getInstance().getProgramListUrl(i));
+			grabAndAdd(location, date, programmes, Settings.getInstance().getProgramListUrl(i));
 		}
 		
-		for (int i = 0; i < programmeAL.size(); i++)
-			System.out.println(((Programme)programmeAL.get(i)).getTitle());
+		for (int i = 0; i < programmes.size(); i++)
+			tvDoc.addProgramme((Programme)programmes.get(i));
+
+		tvDoc.toXMLDocument();
 		
-		return programmeAL;
+		return tvDoc;
 	}
 	
-	private void grabAndAdd(int location, Date date, ArrayList programmeAL, String s) throws IOException, IllegalArgumentException {
+	private void grabAndAdd(int location, Date date, ArrayList programmes, String s) throws IOException, IllegalArgumentException {
 		String url = s;
 		s = s.replaceAll("\\$LOCATION\\$", URLEncoder.encode(Integer.toString(location)));
 		s = s.replaceAll("\\$DATE\\$", URLEncoder.encode(programmeListUrlDateFormatter.format(date)));
@@ -78,7 +82,8 @@ public class EPGGrabber {
 					p.setDescription(pd[i][j]);
 				}
 			}
-			programmeAL.add(p);
+			p.setURL(new URL(Settings.getInstance().getProgrammeBaseUrl().replaceAll("\\$ID\\$", p.getId())));
+			programmes.add(p);
 		}
 	}
 	
