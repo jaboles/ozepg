@@ -1,0 +1,2 @@
+Main-Class: jb.ozepg.ozEPG
+Class-Path: . jdom.jar swixml.jar js.jar
