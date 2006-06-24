@@ -16,6 +16,7 @@ public class ozEPG {
 	public static final String REVISION_STRING = "$Rev$";
 	public static final String DATE_STRING = "$Date$";
 	
+	
 	public void executeUi() {
 		fetchLocationList();
 		mainWindow = new jb.ozepg.ui.MainWindow(locationList);
