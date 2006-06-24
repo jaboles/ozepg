@@ -50,7 +50,7 @@ public class ozEPG {
 	
 	public static String getVersion() {
 		String rev = Utils.findMatch(java.util.regex.Pattern.compile("\\$Rev: (\\d+) \\$"), REVISION_STRING);
-		String date = Utils.findMatch(java.util.regex.Pattern.compile("\\$Date: (.*?) \\$"), DATE_STRING);
+		String date = Utils.findMatch(java.util.regex.Pattern.compile("\\$Date: (?:.*?)\\((.*?)\\) \\$"), DATE_STRING);
 		return rev + " (" + date + ")";
 	}
 }
