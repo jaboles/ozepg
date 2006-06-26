@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <frame title="ozEPG" defaultcloseoperation="JFrame.EXIT_ON_CLOSE">
+	<menubar>
+		<menu text="File">
+			<menuitem text="Quit" action="quitAction" macos_quit="true"/>
+		</menu>
+		<menu text="Help">
+			<menuitem text="About" action="aboutAction" macos_about="true"/>
+		</menu>
+	</menubar>
 	<panel constraints="BorderLayout.NORTH" layout="FlowLayout(FlowLayout.LEADING)">
 		<combobox id="locationComboBox"/>
 		<longintegerspinner id="daysToGrabSpinner" minimum="1" maximum="7"/>

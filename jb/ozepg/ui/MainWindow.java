@@ -81,6 +81,17 @@ public class MainWindow {
 		}
 	};
 	
+	public Action quitAction = new AbstractAction() {
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+		}
+	};
+	
+	public Action aboutAction = new AbstractAction() {
+		public void actionPerformed(ActionEvent e) {
+		}
+	};
+	
 	public void updateGrabButtonStatus() {
 		for (int i = 0; i < epgOutputterList.size(); i++) {
 			EPGOutputter eo = (EPGOutputter)epgOutputterList.get(i);
