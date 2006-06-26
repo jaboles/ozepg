@@ -9,6 +9,6 @@ package jb.ozepg;
 
 public class NebulaDigiTVEPGOutputter extends EPGOutputter {
 	public NebulaDigiTVEPGOutputter() {
-		super("Nebula DigiTV", "Nebula EPG folder: ");
+		super("Nebula DigiTV", "Nebula EPG folder: ", "C:\\Program Files\\Nebula\\DigiTV\\EPG");
 	}
 }

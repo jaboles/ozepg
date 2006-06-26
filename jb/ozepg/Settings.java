@@ -6,11 +6,13 @@
 //  Copyright 2006 __MyCompanyName__. All rights reserved.
 //
 package jb.ozepg;
+import java.util.*;
 import java.util.regex.*;
+import java.util.prefs.*;
 
 public class Settings {
 	private static Settings singleton;
-	private Properties properties; 
+	private Preferences prefs; 
 	
 	public String getLocationListUrl() {return "http://tvguide.ninemsn.com.au/default.asp?type=fta";}
 	public Pattern getLocationListPattern() {return Pattern.compile("(?s)<SELECT name=\"region\" onchange=\"setlocation\\(this\\);\">(.*?)</select>");}
@@ -18,43 +20,53 @@ public class Settings {
 	public String getLocationItemPatternKey() {return "IN";}
 	
 	
-	private String[] defaultProgramListUrls = new String[] {
-		"http://tvguide.ninemsn.com.au/search/default.asp?region=$LOCATION$&day=$DATE$&TimeZ=early&type=fta&go.x=9&go.y=11&go=go&search=true",
-		"http://tvguide.ninemsn.com.au/search/default.asp?region=$LOCATION$&day=$DATE$&TimeZ=morning&type=fta&go.x=9&go.y=11&go=go&search=true",
-		"http://tvguide.ninemsn.com.au/search/default.asp?region=$LOCATION$&day=$DATE$&TimeZ=afternoon&type=fta&go.x=9&go.y=11&go=go&search=true",
-		"http://tvguide.ninemsn.com.au/search/default.asp?region=$LOCATION$&day=$DATE$&TimeZ=night&type=fta&go.x=9&go.y=11&go=go&search=true"
-	};
-	public int getProgramListUrlCount() {return defaultProgramListUrls.length;}
-	public String getProgramListUrl(int index) {return defaultProgramListUrls[index];}
-	public String getProgramListUrlDateFormat() {return "dd/MM/yyyy";}
-	
-	private String[][] defaultDeobfuscationReplacements = new String[][] {
-		{"location\\.href", "''"},
-		{"return;", ";"}, 
-		{"document\\.write\\((\\w*?)\\);", "return $1;"},
-		{"'\\);(\\w*?)\\('", "')+$1('"}
-	};
-	public Pattern getObfuscatedDataPattern() {return Pattern.compile("(?s)criteria.</b><SCRIPT Language=\"Javascript\">(.*?)</SCRIPT></TABLE></td></tr></table>");}
-	public int getDeobfuscationReplacementCount() {return defaultDeobfuscationReplacements.length;}
-	public String getDeobfuscationString(int i) {return defaultDeobfuscationReplacements[i][0];}
-	public String getDeobfuscationReplacement(int i) {return defaultDeobfuscationReplacements[i][1];}
-	public String getDeobfuscationFormat() {return "js";}
-	
-	public Pattern getProgrammeDataPattern() {return Pattern.compile("(?s)<b>(\\d{1,2}:\\d{2} [apm]{2})</b><BR><b>(.*?)(?:<[^>]*?>){3}<a(?:.*?)pid=(\\d*?)\"><b>(.*?)(?:<[^>]*?>){3} \\((\\d*?) mins, Rated:(.*?)\\) </font><br>([^<]*)");}
-	public String getProgrammeDataPatternKey() {return "TCINLRD";}
-	public String getProgrammeDataDateFormat() {return "dd/MM/yyyy hh:mm aa";}
-	public String getProgrammeBaseUrl() {return "http://tvguide.ninemsn.com.au/cu/default.asp?pid=$ID$";}
-	
 	public Channel[] getChannels() {
 		return new Channel[] {
 			new Channel(new String[] {"ABC ACT"}, new int[] {2}),
 			new Channel(new String[] {"ABC NSW"}, new int[] {2}),
+			new Channel(new String[] {"ABC SA"}, new int[] {2}),
 			new Channel(new String[] {"ABC2"}, new int[] {2}),
+			new Channel(new String[] {"Central GTS/BKN"}, new int[] {2}),
 			new Channel(new String[] {"SBS Eastern"}, new int[] {2}),
 			new Channel(new String[] {"SBS News"}, new int[] {2}),
-			new Channel(new String[] {"Channel Seven Melbourne"}, new int[] {2})
+			new Channel(new String[] {"Channel Seven Melbourne"}, new int[] {2}),
+			new Channel(new String[] {"Prime Southern, Canberra/Wollongong/Sth Coast"}, new int[] {2}),
+			new Channel(new String[] {"Southern Cross TEN"}, new int[] {2}),
+			new Channel(new String[] {"Southern Cross TEN Capital, Canberra"}, new int[] {2}),
+			new Channel(new String[] {"WIN Television NSW"}, new int[] {2}),
+			new Channel(new String[] {"ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZYACKKK"}, new int[] {2})
 		};
 	}
+	
+	public void putLocationComboBoxIndex(int i) {
+		prefs.putInt("location_combo_box_index", i);
+	}
+	public int getLocationComboBoxIndex() {
+		return prefs.getInt("location_combo_box_index", 0);
+	}
+	
+	public void putDaysToGrab(long l) {
+		prefs.putLong("days_to_grab", l);
+	}
+	public long getDaysToGrab() {
+		return prefs.getLong("days_to_grab", 1);
+	}
+	
+	public void putOutputterEnabled(EPGOutputter e) {
+		prefs.putBoolean("outputter_selected_"+e.getName(), e.isEnabled());
+	}
+	public boolean getOutputterEnabled(String name) {
+		return prefs.getBoolean("outputter_selected_"+name, false);
+	}
+	
+	public void putOutputterTargetLocation(String name, String location) {
+		prefs.put("outputter_target_location_"+name, location);
+	}
+	public String getOutputterTargetLocation(String name, String defaultLocation) {
+		return prefs.get("outputter_target_location_"+name, defaultLocation);
+	}
+	
+	
 	
 	
 	public static Settings getInstance() {
@@ -63,5 +75,6 @@ public class Settings {
 	}
 	
 	private Settings() {
+		prefs = Preferences.userNodeForPackage(this.getClass());
 	}
 }

@@ -15,33 +15,49 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 
 public class EPGOutputter {
+	protected final String name;
 	protected MainWindow parent;
 	protected JCheckBox checkbox;
 	protected JPanel panel;
 	protected JPanel subPanel;
-	protected JTextField outputParamterTextField;
+	protected final JTextField outputParameterTextField;
 	
-	public EPGOutputter(String name, String outputParameter) {
+	public EPGOutputter(String name, String outputParameter, String defaultTargetLocation) {
+		this.name = name;
+		
 		panel = new JPanel(new BorderLayout());
 		checkbox = new JCheckBox();
 		subPanel = new JPanel(new BorderLayout());
-		outputParamterTextField = new JTextField();
+		outputParameterTextField = new JTextField();
 		
 		subPanel.setBorder(new TitledBorder(name));
 		
 		subPanel.add(new JLabel(outputParameter), BorderLayout.WEST);
-		subPanel.add(outputParamterTextField, BorderLayout.CENTER);
+		subPanel.add(outputParameterTextField, BorderLayout.CENTER);
 		panel.add(subPanel, BorderLayout.CENTER);
 		panel.add(checkbox, BorderLayout.WEST);
 		
-		setEnabled(false);
+		setEnabled(Settings.getInstance().getOutputterEnabled(name));
+		outputParameterTextField.setText(Settings.getInstance().getOutputterTargetLocation(name, defaultTargetLocation));
 		
 		checkbox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setEnabled(checkbox.isSelected());
 				parent.updateGrabButtonStatus();
+				
+				Settings.getInstance().putOutputterEnabled(EPGOutputter.this);
 			}
 		});
+		
+		outputParameterTextField.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {saveTargetLocationInPrefs();}
+			public void removeUpdate(DocumentEvent e) {saveTargetLocationInPrefs();}
+			public void insertUpdate(DocumentEvent e) {saveTargetLocationInPrefs();}
+		});
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public JPanel getPanel(MainWindow parent) {
@@ -50,11 +66,16 @@ public class EPGOutputter {
 	}
 	
 	public void setEnabled(boolean b) {
+		checkbox.setSelected(b);
 		panel.setEnabled(b);
-		outputParamterTextField.setEnabled(b);
+		outputParameterTextField.setEnabled(b);
 	}
 	
 	public boolean isEnabled() {
 		return panel.isEnabled();
+	}
+	
+	private void saveTargetLocationInPrefs() {
+		Settings.getInstance().putOutputterTargetLocation(name, outputParameterTextField.getText());
 	}
 }

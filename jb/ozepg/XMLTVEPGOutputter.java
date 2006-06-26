@@ -9,6 +9,6 @@ package jb.ozepg;
 
 public class XMLTVEPGOutputter extends EPGOutputter {
 	public XMLTVEPGOutputter() {
-		super("XMLTV", "Output XML file: ");
+		super("XMLTV", "Output XML file: ", "xmltv.xml");
 	}
 }

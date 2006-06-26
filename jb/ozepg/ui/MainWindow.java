@@ -23,6 +23,7 @@ public class MainWindow {
 	public JLabel versionLabel;
 	public JButton grabButton;
 	public Box epgOutputterPanel;
+	public JLongIntegerSpinner daysToGrabSpinner;
 	
 	public MainWindow(LocationList locationList, ArrayList epgOutputterList) {
 		this.renderer = new EnhancedSwingEngine(this);
@@ -37,9 +38,27 @@ public class MainWindow {
 		versionLabel.setFont(versionLabel.getFont().deriveFont(10f));
 		versionLabel.setText("Version: "+ozEPG.getVersion()+"    ");
 		
+		// load misc defaults
+		locationComboBox.setSelectedIndex(Settings.getInstance().getLocationComboBoxIndex());
+		daysToGrabSpinner.setLongValue(Settings.getInstance().getDaysToGrab());
+		
+		// setup preference savers
+		locationComboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				Settings.getInstance().putLocationComboBoxIndex(locationComboBox.getSelectedIndex());
+			}
+		});
+		daysToGrabSpinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				Settings.getInstance().putDaysToGrab(daysToGrabSpinner.getLongValue());
+			}
+		});
+		
 		for (int i = 0; i < epgOutputterList.size(); i++) {
 			epgOutputterPanel.add((JPanel)((EPGOutputter)epgOutputterList.get(i)).getPanel(this));
 		}
+		
+		updateGrabButtonStatus();
 		
 		window.pack();
 		window.show();
@@ -49,7 +68,7 @@ public class MainWindow {
 		public void actionPerformed(ActionEvent e) {
 			Location selectedLocation = (Location)locationComboBox.getSelectedItem();
 			
-			EPGGrabber grabber = new EPGGrabber();
+			EPGGrabber grabber = new NineMSNEPGGrabber();
 			try {
 				grabber.grab(selectedLocation.getId(), (Date)dateSpinner.getValue());
 			} catch (IOException ex) {
