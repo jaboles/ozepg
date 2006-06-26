@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<frame title="ozEPG" defaultcloseoperation="JFrame.EXIT_ON_CLOSE">
+<frame title="ozEPG" defaultcloseoperation="JFrame.EXIT_ON_CLOSE" resizable="false">
 	<menubar>
 		<menu text="File">
 			<menuitem text="Quit" action="quitAction" macos_quit="true"/>

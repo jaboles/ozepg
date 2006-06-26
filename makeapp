@@ -1,0 +1,2 @@
+rm -rf build/Debug/ozEPG.app/Contents/MacOS/*.jar
+cp -R build/Debug/*.jar build/Debug/ozEPG.app/Contents/MacOS
