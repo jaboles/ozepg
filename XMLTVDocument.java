@@ -36,7 +36,7 @@ public class XMLTVDocument {
 		return doc;
 	}
 	
-	public Element toXMLElement() {
+	private Element toXMLElement() {
 		Element e = new Element("tv");
 		
 		for (int i = 0; i < programmeList.size(); i++)

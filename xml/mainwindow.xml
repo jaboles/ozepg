@@ -5,8 +5,9 @@
 		<longintegerspinner longvalue="1" minimum="1" maximum="7"/>
 		<label text=" days' data starting "/>
 		<datespinner id="dateSpinner"/>
-		<button action="grabAction">Grab!</button>
+		<button id="grabButton" action="grabAction">Grab!</button>
 	</panel>
+	<vbox id="epgOutputterPanel" constraints="BorderLayout.CENTER"/>
 	<panel constraints="BorderLayout.SOUTH" layout="FlowLayout(FlowLayout.TRAILING)">
 		<label id="versionLabel"/>
 	</panel>

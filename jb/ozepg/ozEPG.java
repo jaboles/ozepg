@@ -16,10 +16,11 @@ public class ozEPG {
 	public static final String REVISION_STRING = "$Rev$";
 	public static final String DATE_STRING = "$Date$";
 	private Map channelMap;
+	private ArrayList epgOutputters;
 	
 	public void executeUi() {
 		fetchLocationList();
-		mainWindow = new jb.ozepg.ui.MainWindow(locationList);
+		mainWindow = new jb.ozepg.ui.MainWindow(locationList, epgOutputters);
 	}
 	
 	public void fetchLocationList() {
@@ -42,6 +43,10 @@ public class ozEPG {
 	private ozEPG() {
 		Channel[] channels = Settings.getInstance().getChannels();
 		channelMap = new HashMap();
+		epgOutputters = new ArrayList();
+		
+		epgOutputters.add(new XMLTVEPGOutputter());
+		epgOutputters.add(new NebulaDigiTVEPGOutputter());
 		
 		for (int i = 0; i < channels.length; i++) {
 			for (int j = 0; j < channels[i].getAllNames().length; j++) {

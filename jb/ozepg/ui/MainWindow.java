@@ -15,14 +15,18 @@ import java.io.*;
 import jb.ozepg.*;
 
 public class MainWindow {
+	private ArrayList epgOutputterList;
 	private SwingEngine renderer;
 	private JFrame window;
 	public JComboBox locationComboBox;
 	public JDateSpinner dateSpinner;
 	public JLabel versionLabel;
+	public JButton grabButton;
+	public Box epgOutputterPanel;
 	
-	public MainWindow(LocationList locationList) {
-		renderer = new EnhancedSwingEngine(this);
+	public MainWindow(LocationList locationList, ArrayList epgOutputterList) {
+		this.renderer = new EnhancedSwingEngine(this);
+		this.epgOutputterList = epgOutputterList;
 		try {
 			window = (JFrame)renderer.render(MainWindow.class.getResource("/xml/mainwindow.xml"));
 		} catch (Exception e) {
@@ -32,6 +36,11 @@ public class MainWindow {
 		for (int i = 0; i < locationList.size(); i++) locationComboBox.addItem(locationList.get(i));
 		versionLabel.setFont(versionLabel.getFont().deriveFont(10f));
 		versionLabel.setText("Version: "+ozEPG.getVersion()+"    ");
+		
+		for (int i = 0; i < epgOutputterList.size(); i++) {
+			epgOutputterPanel.add((JPanel)((EPGOutputter)epgOutputterList.get(i)).getPanel(this));
+		}
+		
 		window.pack();
 		window.show();
 	}
@@ -46,7 +55,21 @@ public class MainWindow {
 			} catch (IOException ex) {
 				ex.printStackTrace(System.err);
 				JOptionPane.showMessageDialog(window, "Couldn't download EPG source data.\n\nPlease check that your computer is connected to the Internet.");
+			} catch (IllegalArgumentException ex) {
+				ex.printStackTrace(System.err);
+				JOptionPane.showMessageDialog(window, ex.toString());
 			}
 		}
 	};
+	
+	public void updateGrabButtonStatus() {
+		for (int i = 0; i < epgOutputterList.size(); i++) {
+			EPGOutputter eo = (EPGOutputter)epgOutputterList.get(i);
+			if (eo.isEnabled()) {
+				grabButton.setEnabled(true);
+				return;
+			}
+		}
+		grabButton.setEnabled(false);
+	}
 }

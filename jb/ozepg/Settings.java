@@ -10,6 +10,7 @@ import java.util.regex.*;
 
 public class Settings {
 	private static Settings singleton;
+	private Properties properties; 
 	
 	public String getLocationListUrl() {return "http://tvguide.ninemsn.com.au/default.asp?type=fta";}
 	public Pattern getLocationListPattern() {return Pattern.compile("(?s)<SELECT name=\"region\" onchange=\"setlocation\\(this\\);\">(.*?)</select>");}
@@ -46,7 +47,10 @@ public class Settings {
 	
 	public Channel[] getChannels() {
 		return new Channel[] {
+			new Channel(new String[] {"ABC ACT"}, new int[] {2}),
+			new Channel(new String[] {"ABC NSW"}, new int[] {2}),
 			new Channel(new String[] {"ABC2"}, new int[] {2}),
+			new Channel(new String[] {"SBS Eastern"}, new int[] {2}),
 			new Channel(new String[] {"SBS News"}, new int[] {2}),
 			new Channel(new String[] {"Channel Seven Melbourne"}, new int[] {2})
 		};
