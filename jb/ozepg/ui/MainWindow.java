@@ -8,6 +8,7 @@
 package jb.ozepg.ui;
 import org.swixml.*;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 import java.util.*;
@@ -37,6 +38,7 @@ public class MainWindow {
 		for (int i = 0; i < locationList.size(); i++) locationComboBox.addItem(locationList.get(i));
 		versionLabel.setFont(versionLabel.getFont().deriveFont(10f));
 		versionLabel.setText("Version: "+ozEPG.getVersion()+"    ");
+		grabButton.setFont(grabButton.getFont().deriveFont(Font.BOLD));
 		
 		// load misc defaults
 		locationComboBox.setSelectedIndex(Settings.getInstance().getLocationComboBoxIndex());

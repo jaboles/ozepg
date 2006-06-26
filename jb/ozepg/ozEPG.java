@@ -8,6 +8,7 @@
 package jb.ozepg;
 import java.util.*;
 import java.io.*;
+import javax.swing.*;
 
 public class ozEPG {
 	private static ozEPG singleton;
@@ -41,6 +42,18 @@ public class ozEPG {
 	}
 	
 	private ozEPG() {
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "ozEPG");
+        System.setProperty("com.apple.mrj.application.growbox.intrudes", "true");
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("apple.awt.brushMetalLook", "true");
+        //System.setProperty("com.apple.macos.useScreenMenuBar", "true");
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // wtf?? Impossible situation
+        }
+		
 		Channel[] channels = Settings.getInstance().getChannels();
 		channelMap = new HashMap();
 		epgOutputters = new ArrayList();
