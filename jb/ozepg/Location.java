@@ -9,25 +9,29 @@ package jb.ozepg;
 import java.io.Serializable;
 
 public class Location implements Serializable {
-	private int id;
+	private String ninemsnId;
 	private String name;
 	
-	public void setId(int i) {
-		this.id = i;
+	public Location(String name, String ninemsnId) {
+		this.name = name;
+		this.ninemsnId = ninemsnId;
 	}
 	
+	public void setNinemsnId(String s) {
+		this.ninemsnId = s;
+	}
 	public void setName(String s) {
 		this.name = s;
 	}
 	
-	public int getId() {
-		return id;
+	public String getNinemsnId() {
+		return ninemsnId;
 	}
-	
 	public String getName() {
 		return name;
 	}
 	
+	/** Synonym for getName() */
 	public String toString() {
 		return name;
 	}

@@ -26,7 +26,7 @@ public class MainWindow {
 	public Box epgOutputterPanel;
 	public JLongIntegerSpinner daysToGrabSpinner;
 	
-	public MainWindow(LocationList locationList, ArrayList epgOutputterList) {
+	public MainWindow(ArrayList locationList, ArrayList epgOutputterList) {
 		this.renderer = new EnhancedSwingEngine(this);
 		this.epgOutputterList = epgOutputterList;
 		try {
@@ -72,7 +72,7 @@ public class MainWindow {
 			
 			EPGGrabber grabber = new NineMSNEPGGrabber();
 			try {
-				grabber.grab(selectedLocation.getId(), (Date)dateSpinner.getValue());
+				grabber.grab(selectedLocation.getNinemsnId(), (Date)dateSpinner.getValue());
 			} catch (IOException ex) {
 				ex.printStackTrace(System.err);
 				JOptionPane.showMessageDialog(window, "Couldn't download EPG source data.\n\nPlease check that your computer is connected to the Internet.");

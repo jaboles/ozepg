@@ -41,7 +41,10 @@ public class URLGrabber {
 	
 	public static URLConnection connect(URL url) throws IOException {
 		URLConnection uc = url.openConnection();
+		uc.addRequestProperty("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, */*");
 		uc.addRequestProperty("Referer", url.toString());
+		uc.addRequestProperty("Accept-Language", "en-au");
+		uc.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
 		uc.connect();
 		return uc;
 	}

@@ -10,5 +10,5 @@ import java.util.*;
 import java.io.*;
 
 public interface EPGGrabber {
-	public XMLTVDocument grab(int location, Date date) throws IOException;
+	public XMLTVDocument grab(String locationId, Date date) throws IOException;
 }

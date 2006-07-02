@@ -45,6 +45,38 @@ public class Settings {
 		};
 	}
 	
+	public Location[] getLocations() {
+		return new Location[] {
+			new Location("ACT", "126"),
+			new Location("Broken Hill", "63"),
+			new Location("Central Coast", "66"),
+			new Location("Griffith", "67"),
+			new Location("Newcastle", "184"),
+			new Location("Northern NSW", "69"),
+			new Location("Remote & C'tral NSW", "106"),
+			new Location("Southern NSW", "71"),
+			new Location("Sydney", "73"),
+			new Location("Darwin", "74"),
+			new Location("Remote & C'tral NT", "108"),
+			new Location("Brisbane", "75"),
+			new Location("Gold Coast", "78"),
+			new Location("Regional QLD", "79"),
+			new Location("Remote & C'tral QLD", "114"),
+			new Location("Renmark", "82"),
+			new Location("Riverland", "83"),
+			new Location("South East SA", "85"),
+			new Location("Spencer Gulf", "86"),
+			new Location("Tasmania", "88"),
+			new Location("Eastern Victoria", "90"),
+			new Location("Geelong", "93"),
+			new Location("Melbourne", "94"),
+			new Location("Mildura/Sunraysia", "95"),
+			new Location("Western Victoria", "98"),
+			new Location("Perth", "101"),
+			new Location("Regional WA", "102")
+		};
+	}
+	
 	public void putLocationComboBoxIndex(int i) {
 		prefs.putInt("location_combo_box_index", i);
 	}

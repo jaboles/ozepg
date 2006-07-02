@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class ozEPG {
 	private static ozEPG singleton;
-	private LocationList locationList;
+	private ArrayList locationList;
 	private jb.ozepg.ui.MainWindow mainWindow;
 	public static final String REVISION_STRING = "$Rev$";
 	public static final String DATE_STRING = "$Date$";
@@ -20,21 +20,7 @@ public class ozEPG {
 	private ArrayList epgOutputters;
 	
 	public void executeUi() {
-		fetchLocationList();
 		mainWindow = new jb.ozepg.ui.MainWindow(locationList, epgOutputters);
-	}
-	
-	public void fetchLocationList() {
-		try {
-			locationList = new LocationList(new File(LocationList.CACHE_FILENAME));
-		} catch (Exception e) {
-			System.err.println("Warning: couldn't load location list from cache, trying online.");
-			try {
-				locationList = new LocationList();
-			} catch (IOException e2) {
-				ozEPG.getInstance().crashed("Couldn't access online TV guide.");
-			}
-		}
 	}
 	
 	public Channel getChannel(String name) {
@@ -53,6 +39,9 @@ public class ozEPG {
         } catch (Exception e) {
             // wtf?? Impossible situation
         }
+		
+		locationList = new ArrayList();
+		locationList.addAll(Arrays.asList(Settings.getInstance().getLocations()));
 		
 		Channel[] channels = Settings.getInstance().getChannels();
 		channelMap = new HashMap();

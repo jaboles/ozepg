@@ -15,8 +15,9 @@ import java.io.*;
 import org.mozilla.javascript.*;
 
 public class NineMSNEPGGrabber implements EPGGrabber {
-	private static SimpleDateFormat programmeListUrlDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-	private static SimpleDateFormat programmeDataDateParser = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");
+	private static SimpleDateFormat programmeListDateFormatter = new SimpleDateFormat("EEEEEEE, d MMM");
+	private static SimpleDateFormat programmeDataDateParser = new SimpleDateFormat("EEEEEEE, d MMM hh:mm aa");
+	private String[][] dateMatches;
 
 	private String[] urls = new String[] {
 		"http://tvguide.ninemsn.com.au/search/default.asp?region=$LOCATION$&day=$DATE$&TimeZ=early&type=fta&go.x=9&go.y=11&go=go&search=true",
@@ -43,13 +44,13 @@ public class NineMSNEPGGrabber implements EPGGrabber {
 	public NineMSNEPGGrabber() {
 	}
 	
-	public XMLTVDocument grab(int location, Date date) throws IOException, IllegalArgumentException {
+	public XMLTVDocument grab(String locationId, Date date) throws IOException, IllegalArgumentException {
 		XMLTVDocument tvDoc = new XMLTVDocument();
 		ArrayList programmes = new ArrayList();
 		
 		
 		for (int i = 0; i < urls.length; i++) {
-			grabAndAdd(location, date, programmes, urls[i]);
+			grabAndAdd(locationId, date, programmes, urls[i]);
 		}
 		
 		for (int i = 0; i < programmes.size(); i++)
@@ -60,10 +61,10 @@ public class NineMSNEPGGrabber implements EPGGrabber {
 		return tvDoc;
 	}
 	
-	private void grabAndAdd(int location, Date date, ArrayList programmes, String s) throws IOException, IllegalArgumentException {
+	private void grabAndAdd(String locationId, Date date, ArrayList programmes, String s) throws IOException, IllegalArgumentException {
 		String url = s;
-		s = s.replaceAll("\\$LOCATION\\$", URLEncoder.encode(Integer.toString(location)));
-		s = s.replaceAll("\\$DATE\\$", URLEncoder.encode(programmeListUrlDateFormatter.format(date)));
+		s = s.replaceAll("\\$LOCATION\\$", URLEncoder.encode(locationId));
+		s = s.replaceAll("\\$DATE\\$", URLEncoder.encode(format(date)));
 		
 		String data = URLGrabber.grab(s);
 		
@@ -74,7 +75,7 @@ public class NineMSNEPGGrabber implements EPGGrabber {
 		
 		String[][] pd = Utils.findAllMatches(programmeDataPattern, data);
 		if (pd == null) {
-			throw new IllegalArgumentException("Could not parse downloaded EPG data. Please check for an updated versio of ozEPG!");
+			throw new IllegalArgumentException("Could not parse downloaded EPG data. Please check for an updated version of ozEPG!");
 		}
 		
 		for (int i = 0; i < pd.length; i++) {
@@ -83,7 +84,7 @@ public class NineMSNEPGGrabber implements EPGGrabber {
 				if (programmeDataPatternKey.charAt(j) == 'T') {
 					Date d;
 					try {
-						d = programmeDataDateParser.parse(programmeListUrlDateFormatter.format(date)+" "+pd[i][j]);
+						d = programmeDataDateParser.parse(programmeListDateFormatter.format(date)+" "+pd[i][j]);
 					} catch (ParseException e) {
 						throw new IllegalArgumentException("Could not parse date. Please check for an updated version of ozEPG!");
 					}
@@ -123,5 +124,19 @@ public class NineMSNEPGGrabber implements EPGGrabber {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Could not evaluate javascript expression. Please check for an updated version of ozEPG!");
 		}
-	}	
+	}
+		
+	private String format(Date d) throws IOException {
+		if (dateMatches == null) {
+			Pattern p = Pattern.compile("<option value=([0-9A-F]*?)(?: selected)?>([^<]*)</option>");
+			dateMatches = Utils.findAllMatches(p, URLGrabber.grab("http://tvguide.ninemsn.com.au/search/default.asp?type=fta"));
+		}
+		String dateString = programmeListDateFormatter.format(d);
+		
+		for (int i = 0; i < dateMatches.length; i++) {
+			if (dateString.equals(dateMatches[i][1]))
+				return dateMatches[i][0];
+		}
+		throw new IllegalArgumentException("Couldn't find lookup value for date '"+dateString+"'. Please check for an updated version of ozEPG!");
+	}
 }
