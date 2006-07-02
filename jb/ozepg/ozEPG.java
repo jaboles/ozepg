@@ -31,7 +31,7 @@ public class ozEPG {
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "ozEPG");
         System.setProperty("com.apple.mrj.application.growbox.intrudes", "true");
         System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("apple.awt.brushMetalLook", "true");
+        System.setProperty("apple.awt.brushMetalLook", "false");
         //System.setProperty("com.apple.macos.useScreenMenuBar", "true");
 
         try {

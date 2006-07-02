@@ -93,7 +93,7 @@ public class Programme {
 		e.addContent((Element)new Element("title").addContent(title));
 		e.addContent((Element)new Element("sub-title"));
 		e.addContent((Element)new Element("desc").addContent(description));
-		e.addContent((Element)new Element("rating").setAttribute("system", "ABA").addContent((Element)new Element("rating").addContent(rating)));
+		e.addContent((Element)new Element("rating").setAttribute("system", "ABA").addContent((Element)new Element("value").addContent(rating)));
 		e.addContent((Element)new Element("length").setAttribute("units", "minutes").addContent(Integer.toString(duration)));
 		e.addContent((Element)new Element("category"));
 		e.addContent((Element)new Element("url").addContent(url.toString()));
